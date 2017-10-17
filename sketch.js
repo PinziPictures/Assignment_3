@@ -6,7 +6,7 @@ var inclinazione=50;
 var i,j;
 var direzione=true;
 var larghezza;
-var ultima_sx,ultima_dx;
+var ultima_sx=0,ultima_dx=0;
 
 function setup() {
   createCanvas(500,500);
@@ -19,6 +19,9 @@ function draw() {
   background(255,255,255);
   noFill();
   noStroke();
+  
+  
+  noFill();
   for(i=0;i<width;i+=larghezza){
     //altezza_b=random(altezza);
     altezza_b=50;
@@ -44,68 +47,40 @@ function draw() {
       }
     }
   }
-  
-  direzione=true;
-  
-  for(i=0;i<width;i+=larghezza){
-    altezza_b=50;
-    if(direzione){
-        direzione=false;
-    }
-    else{
-      direzione=true;
-    }
-    if((mouseX>i && mouseX<i+larghezza)){
-      
-      for(j=-inclinazione;j<height+altezza_b;j+=altezza_b){
-        fill(random(colori));
-        if(direzione){
-          quad(i,j,i+larghezza,j+inclinazione,i+larghezza,j+altezza_b+inclinazione,i,j+altezza_b);
-        }
-        else{
-          quad(i,j,i+larghezza,j-inclinazione,i+larghezza,j+altezza_b-inclinazione,i,j+altezza_b);
-        }
-      }
-    }
-  }
-  
-  
-  
-}
-/*
-function mouseMoved() {
-  larghezza=width/n;
-  for(i=0;i<width;i+=larghezza){
-    if((mouseX>i && mouseX<i+larghezza)){
-      ultima_dx=i+larghezza;
-      ultima_sx=i;
-    }
-  }
-  console.log(ultima_dx);
-  loop();
-  
-  //direzione=false;
-  for(i=0;i<width;i+=larghezza){
-    altezza_b=50;
-    if(direzione){
-        direzione=false;
-    }
-    else{
-      direzione=true;
-    }
-    if((mouseX>i && mouseX<i+larghezza) && (ultima_sx!=i && ultima_dx!=i+larghezza)){
-      
-      for(j=-inclinazione;j<height+altezza_b;j+=altezza_b){
-        fill(random(colori));
-        if(direzione){
-          quad(i,j,i+larghezza,j+inclinazione,i+larghezza,j+altezza_b+inclinazione,i,j+altezza_b);
-        }
-        else{
-          quad(i,j,i+larghezza,j-inclinazione,i+larghezza,j+altezza_b-inclinazione,i,j+altezza_b);
-        }
-      }
-    }
-  }
+  fill(255,255,255);
+  textSize(20);
+  text("Muoviti per colorare / Click per reset",80,400);
   noLoop();
+  
 }
-*/
+function mouseMoved() {
+  if(mouseX<ultima_sx || mouseX>ultima_dx){
+    direzione=true;
+    for(i=0;i<width;i+=larghezza){
+      altezza_b=50;
+      if(direzione){
+          direzione=false;
+      }
+      else{
+        direzione=true;
+      }
+      if((mouseX>i && mouseX<i+larghezza)){
+        ultima_sx=i;
+        ultima_dx=i+larghezza;
+        for(j=-inclinazione;j<height+altezza_b;j+=altezza_b){
+          fill(random(colori));
+          if(direzione){
+            quad(i,j,i+larghezza,j+inclinazione,i+larghezza,j+altezza_b+inclinazione,i,j+altezza_b);
+          }
+          else{
+            quad(i,j,i+larghezza,j-inclinazione,i+larghezza,j+altezza_b-inclinazione,i,j+altezza_b);
+          }
+        }
+      }
+    }
+  }
+}
+
+function mousePressed() {
+    redraw();
+}
